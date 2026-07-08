@@ -1,6 +1,10 @@
 const express = require('express');
+const morgan = require('morgan'); // Khai báo morgan
 const app = express();
 const port = 3000;
+
+// Tích hợp morgan vào app
+app.use(morgan('combined'));
 
 // CSS dùng chung cho toàn bộ trang
 const baseStyle = `
