@@ -2,45 +2,72 @@
     <div style="padding: 50px 20px; background: var(--background-secondary);">
         <div class="container">
             <!-- Tiêu đề và form tìm kiếm -->
-            <div style="text-align: center; margin-bottom: 40px;">
+            <div style="text-align: center; margin-bottom: 50px;">
                 <h1 class="h1">Tìm kiếm</h1>
-                <p class="h3" style="margin-top: 10px;">Nhập từ khóa để tìm kiếm!</p>
+                
             </div>
 
             <form action="/search" method="GET" style="max-width: 600px; margin: 0 auto 50px auto; display: flex; gap: 10px;">
                 <input type="text" name="q" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." 
                     style="flex: 1; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);"
                     value="{{searchQuery}}">
-                <button type="submit" style="background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;">
-                    Tìm kiếm
+                <button type="submit" style="background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer;">
+                    🔍 Tìm
                 </button>
             </form>
 
             <!-- Hiển thị kết quả tìm kiếm -->
             {{#if searchQuery}}
                 <h3 style="text-align: center; margin-bottom: 30px; color: var(--foreground-primary);">
-                    Kết quả tìm kiếm cho: <b style="color: var(--accent);">{{searchQuery}}</b>
+                    Kết quả tìm kiếm cho: <b style="color: var(--accent);">"{{searchQuery}}"</b>
                 </h3>
 
-                {{#if results.length}}
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto;">
-                        {{#each results}}
-                            <div style="background: var(--background-primary); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s ease;">
-                                <img src="{{this.avatar}}" alt="{{this.name}}" 
-                                    style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent);"
-                                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22 viewBox=%220 0 120 120%22%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%2258%22 fill=%22%23667eea%22/%3E%3Ctext x=%2260%22 y=%2270%22 font-size=%2250%22 fill=%22white%22 text-anchor=%22middle%22%3E{{substring this.name 0 1}}%3C/text%3E%3C/svg%3E'">
-                                <h3 style="color: var(--foreground-primary); margin-bottom: 10px; font-size: 1.3rem;">{{this.name}}</h3>
-                                <p style="margin: 5px 0; color: var(--foreground-secondary);"><strong>MSSV:</strong> {{this.mssv}}</p>
-                                <p style="margin: 5px 0; color: var(--foreground-secondary);"><strong>Lớp:</strong> {{this.class}}</p>
-                                <p style="margin: 5px 0; color: var(--foreground-secondary);"><strong>Địa chỉ:</strong> {{this.address}}</p>
+                <!-- Kết quả bài viết -->
+                {{#if postResults.length}}
+                    <h4 style="color: var(--accent); margin-bottom: 20px; padding-left: 10px; border-left: 4px solid var(--accent);">📝 Bài viết ({{postResults.length}})</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px;">
+                        {{#each postResults}}
+                            <div style="background: var(--background-primary); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                                <span style="display: inline-block; background: var(--action-primary); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px;">
+                                    {{#if (eq this.category 'cong-nghe')}}💻 Công nghệ{{/if}}
+                                    {{#if (eq this.category 'du-lich')}}✈️ Du lịch{{/if}}
+                                    {{#if (eq this.category 'sach')}}📚 Sách{{/if}}
+                                    {{#if (eq this.category 'song')}}🏡 Sống{{/if}}
+                                </span>
+                                <h4 style="color: var(--foreground-primary); margin-bottom: 10px; font-size: 1.2rem;">{{this.title}}</h4>
+                                <p style="color: var(--foreground-secondary); margin-bottom: 15px; font-size: 0.95rem;">{{this.description}}</p>
+                                <p style="color: var(--foreground-secondary); font-size: 0.85rem;">
+                                    ✏️ {{this.author}} | 📅 {{this.createdAt}}
+                                </p>
                             </div>
                         {{/each}}
                     </div>
-                {{else}}
-                    <p style="text-align: center; color: var(--foreground-secondary); font-size: 1.1rem;">
-                        Không tìm thấy thành viên nào khớp với từ khóa!
-                    </p>
                 {{/if}}
+
+                <!-- Kết quả thành viên nhóm -->
+                {{#if teamResults.length}}
+                    <h4 style="color: var(--accent); margin-bottom: 20px; padding-left: 10px; border-left: 4px solid var(--accent);">👥 Thành viên nhóm ({{teamResults.length}})</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                        {{#each teamResults}}
+                            <div style="background: var(--background-primary); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center;">
+                                <img src="{{this.avatar}}" alt="{{this.name}}" 
+                                    style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent);"
+                                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22 viewBox=%220 0 120 120%22%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%2258%22 fill=%22%23667eea%22/%3E%3Ctext x=%2260%22 y=%2270%22 font-size=%2250%22 fill=%22white%22 text-anchor=%22middle%22%3E{{substring this.name 0 1}}%3C/text%3E%3C/svg%3E'">
+                                <h4 style="color: var(--foreground-primary); margin-bottom: 10px; font-size: 1.2rem;">{{this.name}}</h4>
+                                <p style="margin: 5px 0; color: var(--foreground-secondary); font-size: 0.95rem;"><strong>MSSV:</strong> {{this.mssv}}</p>
+                                <p style="margin: 5px 0; color: var(--foreground-secondary); font-size: 0.95rem;"><strong>Lớp:</strong> {{this.class}}</p>
+                                <p style="margin: 5px 0; color: var(--foreground-secondary); font-size: 0.95rem;"><strong>Địa chỉ:</strong> {{this.address}}</p>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{/if}}
+
+                <!-- Không có kết quả nào -->
+                {{#unless (or postResults.length teamResults.length)}}
+                    <p style="text-align: center; color: var(--foreground-secondary); font-size: 1.1rem; padding: 50px;">
+                        Không tìm thấy kết quả nào cho từ khóa "{{searchQuery}}"!
+                    </p>
+                {{/unless}}
             {{/if}}
         </div>
     </div>

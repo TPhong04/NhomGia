@@ -29,22 +29,39 @@
             <div class="blog">
                 <h2 class="h2">Latest Blog Post</h2>
                 <div class="blog-card-group">
-                    <div class="blog-card">
-                        <div class="blog-content-wrapper">
-                            <button class="blog-topic text-tiny">WebDev</button>
-                            <h3>
-                                <a href="#" class="h3">
-                                    Bắt đầu với Node.js và Express
-                                </a>
-                            </h3>
-                            <div class="wrapper">
-                                <a href="#" class="h4">Dương Thanh Phong</a>
-                                <p class="text-sm">
-                                    <time datetime="2024-01-01">Monday, 01-01-2024</time>
-                                </p>
+                    {{#if posts.length}}
+                        {{#each posts}}
+                            <div class="blog-card">
+                                <div class="blog-content-wrapper">
+                                    <!-- Hiển thị chủ đề -->
+                                    <button class="blog-topic text-tiny">
+                                        {{#if (eq this.category 'cong-nghe')}}💻 Công nghệ{{/if}}
+                                        {{#if (eq this.category 'du-lich')}}✈️ Du lịch{{/if}}
+                                        {{#if (eq this.category 'sach')}}📚 Sách{{/if}}
+                                        {{#if (eq this.category 'song')}}🏡 Sống{{/if}}
+                                    </button>
+                                    <h3>
+                                        <a href="#" class="h3">
+                                            {{this.title}}
+                                        </a>
+                                    </h3>
+                                    <p class="text-sm" style="margin-bottom: 15px; color: var(--foreground-secondary);">
+                                        {{this.description}}
+                                    </p>
+                                    <div class="wrapper">
+                                        <a href="#" class="h4">{{this.author}}</a>
+                                        <p class="text-sm">
+                                            <time>{{this.createdAt}}</time>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        {{/each}}
+                    {{else}}
+                        <p style="text-align: center; color: var(--foreground-secondary); padding: 50px;">
+                            Chưa có bài viết nào. Hãy tạo bài viết đầu tiên!
+                        </p>
+                    {{/if}}
                 </div>
             </div>
         </div>

@@ -1,0 +1,140 @@
+<main>
+    <div style="padding: 50px 20px; background: var(--background-secondary);">
+        <div class="container">
+            <h1 class="h1" style="text-align: center; margin-bottom: 40px;">
+                ✏️ Tạo bài viết mới
+            </h1>
+
+            <form action="/blogs/create" method="POST" style="max-width: 800px; margin: 0 auto; background: var(--background-primary); padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <!-- Dropdown chọn chủ đề -->
+                <div style="margin-bottom: 25px;">
+                    <label class="h3" style="display: block; margin-bottom: 10px; color: var(--foreground-primary);">Chọn chủ đề</label>
+                    <select name="category" id="categorySelect" required style="width: 100%; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                        <option value="">-- Vui lòng chọn chủ đề --</option>
+                        <option value="cong-nghe">💻 Công nghệ</option>
+                        <option value="du-lich">✈️ Du lịch</option>
+                        <option value="sach">📚 Sách</option>
+                        <option value="song">🏡 Sống</option>
+                    </select>
+                </div>
+
+                <!-- Trường chung (tất cả chủ đề đều có) -->
+                <div style="margin-bottom: 25px;">
+                    <label class="h3" style="display: block; margin-bottom: 10px; color: var(--foreground-primary);">Tiêu đề bài viết</label>
+                    <input type="text" name="title" class="form-control" required placeholder="Nhập tiêu đề bài viết..." style="width: 100%; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label class="h3" style="display: block; margin-bottom: 10px; color: var(--foreground-primary);">Tác giả</label>
+                    <input type="text" name="author" class="form-control" required placeholder="Nhập tên tác giả..." style="width: 100%; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label class="h3" style="display: block; margin-bottom: 10px; color: var(--foreground-primary);">Mô tả ngắn</label>
+                    <textarea name="description" class="form-control" required placeholder="Nhập mô tả ngắn về bài viết..." rows="3" style="width: 100%; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary); resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label class="h3" style="display: block; margin-bottom: 10px; color: var(--foreground-primary);">Nội dung chính</label>
+                    <textarea name="content" class="form-control" required placeholder="Nhập nội dung chi tiết của bài viết..." rows="8" style="width: 100%; padding: 12px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary); resize: vertical;"></textarea>
+                </div>
+
+                <!-- Trường riêng theo chủ đề (ẩn ban đầu) -->
+                <!-- Công nghệ -->
+                <div id="cong-nghe-fields" class="category-fields" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 10px; background: var(--background-secondary);">
+                    <h4 style="color: var(--accent); margin-bottom: 15px;">💻 Thông tin công nghệ</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Công nghệ sử dụng</label>
+                        <input type="text" name="techUsed" placeholder="Ví dụ: Node.js, React, MongoDB..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                    <div>
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Mục tiêu bài viết</label>
+                        <input type="text" name="techGoal" placeholder="Ví dụ: Hướng dẫn, chia sẻ kinh nghiệm..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                </div>
+
+                <!-- Du lịch -->
+                <div id="du-lich-fields" class="category-fields" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 10px; background: var(--background-secondary);">
+                    <h4 style="color: var(--accent); margin-bottom: 15px;">✈️ Thông tin du lịch</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Địa điểm</label>
+                        <input type="text" name="travelLocation" placeholder="Ví dụ: Đà Lạt, Phú Quốc..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                    <div>
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Thời gian đi</label>
+                        <input type="text" name="travelDate" placeholder="Ví dụ: 20/07/2024 - 25/07/2024..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                </div>
+
+                <!-- Sách -->
+                <div id="sach-fields" class="category-fields" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 10px; background: var(--background-secondary);">
+                    <h4 style="color: var(--accent); margin-bottom: 15px;">📚 Thông tin sách</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Tên sách</label>
+                        <input type="text" name="bookName" placeholder="Nhập tên sách..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Tác giả sách</label>
+                        <input type="text" name="bookAuthor" placeholder="Nhập tên tác giả sách..." style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                    <div>
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Đánh giá</label>
+                        <select name="bookRating" style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                            <option value="">-- Chọn đánh giá --</option>
+                            <option value="1">⭐ 1 sao</option>
+                            <option value="2">⭐⭐ 2 sao</option>
+                            <option value="3">⭐⭐⭐ 3 sao</option>
+                            <option value="4">⭐⭐⭐⭐ 4 sao</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 sao</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sống -->
+                <div id="song-fields" class="category-fields" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 10px; background: var(--background-secondary);">
+                    <h4 style="color: var(--accent); margin-bottom: 15px;">🏡 Thông tin sống</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Loại nội dung</label>
+                        <select name="lifeType" style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                            <option value="">-- Chọn loại --</option>
+                            <option value="kinh-nghiem">Chia sẻ kinh nghiệm</option>
+                            <option value="goc-nhin">Góc nhìn cá nhân</option>
+                            <option value="thu-thuat">Thủ thuật hay</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="h4" style="display: block; margin-bottom: 8px; color: var(--foreground-primary);">Nguồn cảm hứng</label>
+                        <input type="text" name="lifeInspiration" placeholder="Điều gì cảm hứng bạn viết bài này?" style="width: 100%; padding: 10px 15px; border: 2px solid var(--action-primary); border-radius: 10px; font-size: 1rem; background: var(--background-primary); color: var(--foreground-primary);">
+                    </div>
+                </div>
+
+                <!-- Nút đăng bài -->
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" style="background: var(--accent); color: white; border: none; padding: 15px 50px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s ease;">
+                        📝 Đăng bài viết
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- JavaScript xử lý hiển thị trường theo chủ đề -->
+<script>
+    const categorySelect = document.getElementById('categorySelect');
+    const categoryFields = document.querySelectorAll('.category-fields');
+
+    categorySelect.addEventListener('change', function() {
+        // Ẩn tất cả các trường trước
+        categoryFields.forEach(field => field.style.display = 'none');
+
+        // Hiển thị trường của chủ đề đã chọn
+        const selectedCategory = this.value;
+        if (selectedCategory) {
+            const fieldElement = document.getElementById(`${selectedCategory}-fields`);
+            if (fieldElement) {
+                fieldElement.style.display = 'block';
+            }
+        }
+    });
+</script>

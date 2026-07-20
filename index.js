@@ -40,8 +40,25 @@ const teamMembers = [
   }
 ];
 
+// Dữ liệu bài viết blog
+let posts = [
+  {
+    id: 1,
+    title: "Giới thiệu dự án Blog Nhóm",
+    description: "Bài viết đầu tiên giới thiệu về dự án blog của chúng tôi",
+    content: "Đây là dự án blog được xây dựng bằng Node.js và Express...",
+    category: "cong-nghe",
+    author: "Dương Thanh Phong",
+    createdAt: new Date().toLocaleDateString("vi-VN")
+  }
+];
+
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware phân giải dữ liệu từ form và JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Template engine
 app.engine('hbs', engine({
@@ -53,6 +70,12 @@ app.engine('hbs', engine({
         return str.substring(start, start + length);
       }
       return '';
+    },
+    eq: function (a, b) {
+      return a === b;
+    },
+    or: function (a, b) {
+      return a || b;
     }
   }
 }));
@@ -64,7 +87,7 @@ app.use(morgan('combined'));
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('home');
+  res.render('home', { posts });
 });
 
 app.get('/about', (req, res) => {
@@ -77,24 +100,64 @@ app.get('/contact', (req, res) => {
 
 app.get('/search', (req, res) => {
   const searchQuery = req.query.q;
-  console.log("Từ khóa tìm kiếm:", searchQuery);
+  console.log('Từ khóa tìm kiếm:', searchQuery);
 
-  let results = [];
+  let teamResults = [];
+  let postResults = [];
+
   if (searchQuery) {
-    // Lọc thành viên theo tên, MSSV, lớp, địa chỉ
-    results = teamMembers.filter(member => 
-      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const queryLower = searchQuery.toLowerCase();
+
+    // Lọc thành viên nhóm
+    teamResults = teamMembers.filter(member => 
+      member.name.toLowerCase().includes(queryLower) ||
       member.mssv.includes(searchQuery) ||
-      member.class.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.address.toLowerCase().includes(searchQuery.toLowerCase())
+      member.class.toLowerCase().includes(queryLower) ||
+      member.address.toLowerCase().includes(queryLower)
+    );
+
+    // Lọc bài viết
+    postResults = posts.filter(post => 
+      post.title.toLowerCase().includes(queryLower) ||
+      post.description.toLowerCase().includes(queryLower) ||
+      post.author.toLowerCase().includes(queryLower) ||
+      (post.content && post.content.toLowerCase().includes(queryLower))
     );
   }
 
-  res.render('search', { searchQuery, results });
+  res.render('search', { searchQuery, teamResults, postResults });
 });
 
 app.get('/team', (req, res) => {
   res.render('team');
+});
+
+// Route hiển thị form viết bài
+app.get('/blogs/create', (req, res) => {
+  res.render('create');
+});
+
+// Route xử lý đăng bài viết
+app.post('/blogs/create', (req, res) => {
+  // Tạo bài viết mới với ID tự động tăng
+  const newPost = {
+    id: posts.length + 1,
+    title: req.body.title,
+    description: req.body.description,
+    content: req.body.content,
+    category: req.body.category,
+    author: req.body.author,
+    createdAt: new Date().toLocaleDateString("vi-VN"),
+    // Thêm các trường tùy chọn theo chủ đề
+    ...req.body
+  };
+
+  // Thêm bài viết vào đầu mảng (mới nhất lên trên)
+  posts.unshift(newPost);
+  console.log('Đã thêm bài viết:', newPost);
+
+  // Chuyển hướng về trang chủ
+  res.redirect('/');
 });
 
 // Listen
