@@ -34,8 +34,13 @@
                                     {{#if (eq this.category 'sach')}}📚 Sách{{/if}}
                                     {{#if (eq this.category 'song')}}🏡 Sống{{/if}}
                                 </span>
-                                <h4 style="color: var(--foreground-primary); margin-bottom: 10px; font-size: 1.2rem;">{{this.title}}</h4>
+                                <h4 style="margin-bottom: 10px; font-size: 1.2rem;">
+                                    <a href="/blogs/{{this.id}}" style="color: var(--foreground-primary); text-decoration: none;">{{this.title}}</a>
+                                </h4>
                                 <p style="color: var(--foreground-secondary); margin-bottom: 15px; font-size: 0.95rem;">{{this.description}}</p>
+                                <p style="margin-bottom: 15px;">
+                                    <a href="/blogs/{{this.id}}" class="btn btn-secondary">Xem chi tiết</a>
+                                </p>
                                 <p style="color: var(--foreground-secondary); font-size: 0.85rem;">
                                     ✏️ {{this.author}} | 📅 {{this.createdAt}}
                                 </p>

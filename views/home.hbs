@@ -41,15 +41,18 @@
                                         {{#if (eq this.category 'song')}}🏡 Sống{{/if}}
                                     </button>
                                     <h3>
-                                        <a href="#" class="h3">
+                                        <a href="/blogs/{{this.id}}" class="h3">
                                             {{this.title}}
                                         </a>
                                     </h3>
                                     <p class="text-sm" style="margin-bottom: 15px; color: var(--foreground-secondary);">
                                         {{this.description}}
                                     </p>
+                                    <p style="margin-bottom: 15px;">
+                                        <a href="/blogs/{{this.id}}" class="btn btn-secondary">Xem chi tiết</a>
+                                    </p>
                                     <div class="wrapper">
-                                        <a href="#" class="h4">{{this.author}}</a>
+                                        <span class="h4">{{this.author}}</span>
                                         <p class="text-sm">
                                             <time>{{this.createdAt}}</time>
                                         </p>
